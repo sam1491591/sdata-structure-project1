@@ -3,6 +3,8 @@ using namespace std;
 
 void drop(string obj, int m, int n, int rp, int move);
 
+void eliminate(int m, int n);
+
 int matrix[15][40];
 
 int main()
@@ -19,6 +21,7 @@ int main()
 		cin >> rp >> move;
 		//cout << rp <<" "<< move << endl;
 		drop(obj, m, n, rp, move);
+		eliminate(m, n);
 
 		cin >> obj;
 	}
@@ -26,7 +29,9 @@ int main()
 	{
 		for (int j = 0; j < n; j++)
 		{
-			cout << matrix[i][j] << " ";
+			cout << matrix[i][j] ;
+			if (j != n - 1)
+				cout << " ";
 		}
 		cout << endl;
 	}
@@ -433,5 +438,29 @@ void drop(string obj, int m, int n, int rp, int move)
 		matrix[y - 1 + y2][rp - 1 + move] = 1;
 		matrix[y - 1 + y2][rp + move] = 1;
 		matrix[y + y2][rp + move] = 1;
+	}
+}
+
+void eliminate(int m, int n)
+{
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (matrix[i][j] == 0)
+				break;
+			if (j == n - 1)
+			{
+				for (int k = i ; k > 1; k--)
+				{
+					for (int l = 0; l < n; l++)
+					{
+						matrix[k][l] = matrix[k - 1][l];
+					}
+				}
+				for (int k = 0; k < n; k++)
+					matrix[0][k] = 0;
+			}
+		}
 	}
 }
