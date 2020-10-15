@@ -1,40 +1,62 @@
 #include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <string>
 using namespace std;
 
 void drop(string obj, int m, int n, int rp, int move);
 
 void eliminate(int m, int n);
 
-int matrix[15][40];
+int matrix[20][50];
 
-int main()
+int main(int argc,char* argv[])
 {
 	int m, n;
-	cin >> m >> n;
-	cout << m << " "<<n << endl;
+	fstream input(argv[1], ios::in);
+	fstream output("108062140_proj1.final", ios::out);
+	if (!input)
+	{
+		cout << "no file/n";
+	}
+	if (!output)
+	{
+		cout << "can't output your answer";
+	}
+	input >> m >> n;
+	//cin >> m >> n;
+	//cout << m << " "<<n << endl;
 	string obj;
-	cin >> obj;
+	input >> obj;
+	//cin >> obj;
 	int rp, move;
 	while (obj!="End")
 	{
 		//cout << obj << endl;
-		cin >> rp >> move;
+		input >> rp >> move;
+		//cin >> rp >> move;
 		//cout << rp <<" "<< move << endl;
 		drop(obj, m, n, rp, move);
 		eliminate(m, n);
 
-		cin >> obj;
+		input >> obj;
+		//cin >> obj;
 	}
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			cout << matrix[i][j] ;
+			output << matrix[i][j];
+			//cout << matrix[i][j] ;
 			if (j != n - 1)
-				cout << " ";
+				output << " ";
+				//cout << " ";
 		}
-		cout << endl;
+		output << endl;
+		//cout << endl;
 	}
+	input.close();
+	output.close();
 }
 
 void drop(string obj, int m, int n, int rp, int move)
@@ -371,10 +393,10 @@ void drop(string obj, int m, int n, int rp, int move)
 		}
 		if (y2 != 0)
 			y2 = y2 - 1;
-		matrix[y - 2 + y2][rp + move] = 1;
 		matrix[y - 1 + y2][rp - 1 + move] = 1;
 		matrix[y + y2][rp - 1 + move] = 1;
 		matrix[y - 1 + y2][rp + move] = 1;
+		matrix[y - 2 + y2][rp + move] = 1;
 	}
 	if (obj == "I1")
 	{
@@ -451,7 +473,7 @@ void eliminate(int m, int n)
 				break;
 			if (j == n - 1)
 			{
-				for (int k = i ; k > 1; k--)
+				for (int k = i ; k > 0; k--)
 				{
 					for (int l = 0; l < n; l++)
 					{
@@ -461,6 +483,7 @@ void eliminate(int m, int n)
 				for (int k = 0; k < n; k++)
 					matrix[0][k] = 0;
 			}
+
 		}
 	}
 }
